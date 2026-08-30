@@ -42,6 +42,39 @@ app.get('/pedidos', (req, res) => {
   res.json(pedidos);
 });
 
+app.post('/pedidos', (req, res) => {
+  const pedidos = leerJson(ARCHIVO_PEDIDOS);
+  const nuevoPedido = {
+    id_sync: Date.now().toString(),
+    ...req.body,
+    estado: 'Solicitado',
+    costo_estimado: null,
+    costo_final: null,
+    fecha_sync: new Date().toISOString(),
+  };
+  pedidos.unshift(nuevoPedido);
+  guardarJson(ARCHIVO_PEDIDOS, pedidos);
+  res.status(201).json(nuevoPedido);
+});
+
+app.patch('/pedidos/:id_sync', (req, res) => {
+  const pedidos = leerJson(ARCHIVO_PEDIDOS);
+  const index = pedidos.findIndex((p) => p.id_sync === req.params.id_sync);
+  if (index === -1) return res.status(404).json({ error: 'Pedido no encontrado' });
+
+  pedidos[index] = { ...pedidos[index], ...req.body };
+  guardarJson(ARCHIVO_PEDIDOS, pedidos);
+  res.json(pedidos[index]);
+});
+
+// ---------- TALLERES ----------
+
+app.get('/talleres', (req, res) => {
+  const talleres = leerJson(ARCHIVO_TALLERES);
+  console.log(`[DIAGNÓSTICO] GET /talleres → devolviendo ${talleres.length} taller(es)`);
+  res.json(talleres);
+});
+
 app.post('/talleres', (req, res) => {
   const talleres = leerJson(ARCHIVO_TALLERES);
   const { taller_id, nombre_usuario, nombre_taller, telefono_contacto, direccion_taller } = req.body;
@@ -67,6 +100,7 @@ app.post('/talleres', (req, res) => {
   }
 
   guardarJson(ARCHIVO_TALLERES, talleres);
+  console.log(`[DIAGNÓSTICO] POST /talleres → guardado "${registro.nombre_taller}" (taller_id: ${registro.taller_id}). Total ahora: ${talleres.length}`);
   res.status(201).json(registro);
 });
 
