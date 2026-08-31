@@ -11,7 +11,7 @@ const ARCHIVO_TALLERES = path.join(__dirname, 'talleres.json');
 const ARCHIVO_CATALOGO = path.join(__dirname, 'catalogo_telas.json');
 
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '25mb' }));
 
 app.use((req, res, next) => {
   const llaveRecibida = req.headers['x-api-key'];
