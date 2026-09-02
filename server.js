@@ -5,7 +5,7 @@ const path = require('path');
 
 const app = express();
 const PUERTO = process.env.PORT || 4000;
-const LLAVE_SECRETA = 'Tapiceria-Morab-2026-XyZ9';
+const LLAVE_SECRETA = process.env.API_KEY;
 const ARCHIVO_PEDIDOS = path.join(__dirname, 'pedidos.json');
 const ARCHIVO_TALLERES = path.join(__dirname, 'talleres.json');
 const ARCHIVO_CATALOGO = path.join(__dirname, 'catalogo_telas.json');
