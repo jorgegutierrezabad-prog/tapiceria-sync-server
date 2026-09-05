@@ -108,6 +108,12 @@ app.get('/talleres', (req, res) => {
   res.json(talleres);
 });
 
+app.delete('/talleres', (req, res) => {
+  guardarJson(ARCHIVO_TALLERES, []);
+  console.log('[DIAGNÓSTICO] Se borraron TODOS los talleres del servidor');
+  res.json({ eliminado: true, mensaje: 'Todos los talleres fueron eliminados' });
+});
+
 app.post('/talleres', (req, res) => {
   const talleres = leerJson(ARCHIVO_TALLERES);
   const { taller_id, nombre_usuario, nombre_taller, telefono_contacto, direccion_taller } = req.body;
